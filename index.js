@@ -1,30 +1,27 @@
-const Tuple = function () {
+const arityError = 'Tuple arity does not match its prototype'
+const nullError = 'Tuples may not have any null values'
+
+const newError = error => {throw new Error(error)}
+
+module.exports = function () {
   const typeInfo = Array.prototype.slice.call(arguments, 0);
-  const _T = function () {
-      const values = Array.prototype.slice.call(arguments, 0);
-      
-      if (values.some((val) => val === null || val === undefined)) {
-           throw new ReferenceError('Tuples may not have any null values');
-      }   
+  const T = function () {
+    const values = Array.prototype.slice.call(arguments, 0);
 
-      if (values.length !== typeInfo.length) {
-          throw new TypeErro('Tuple arity does not match its prototype');
-      }
-
-      values.map(function (val, index) {
-          this['_' + (index + 1)] = checkType(typeInfo[index])(val);
-      }, this);
-
-      Object.freeze(this); 
-  };
-
-  _T.prototype.values = function () {
-      return Object.keys(this).map(function (k) {
-          return this[k];
-      })
-  }
+    if (values.some((val) => val === null || val === undefined)) newError(nullError) 
+    if (values.length !== typeInfo.length) newError(arityError)
   
-  return _T;
+    values.map((val, index) => {
+      this[(index)] = typeInfo[index](val);
+    }, this);
+  
+    Object.freeze(this); 
+  };
+  
+  T.prototype.values = () => {
+    return Object.keys(this).map(function (k) {
+      return this[k];
+    })
+  }
+  return T;
 }
-
-module.exports = Tuple
