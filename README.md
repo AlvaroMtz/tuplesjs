@@ -15,7 +15,7 @@ const T = require('tuplesjs')
 
 const Status = T(Number, String)
 
-# returns 'T { '0': 401, '1': 'No Authorize' }'
+# returns 'T{"0": 401, "1":"No Authorize"}'
 const status = new Status(401, 'No Authorize')
 ```
 
